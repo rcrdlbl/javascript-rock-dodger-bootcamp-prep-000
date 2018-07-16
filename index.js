@@ -110,8 +110,8 @@ function createRock(x) {
 function endGame() {
   ROCKS = []
   gameInterval = 0
-  window.removeEventListener('keydown', moveDodger())
-  alert(YOU LOSE!)
+  window.removeEventListener('keydown', moveDodger)
+  alert("YOU LOSE!")
 }
 
 function moveDodger(e) {
@@ -126,9 +126,13 @@ function moveDodger(e) {
    while('keydown') {
      if (e.which === LEFT_ARROW) {
        moveDodgerLeft()
+       e.preventDefault()
+       e.stopPropagation()
      }
      if (e.which === RIGHT_ARROW) {
        moveDodgerRight()
+       e.preventDefault()
+       e.stopPropagation()
      }
    }
 }
@@ -139,15 +143,24 @@ function moveDodgerLeft() {
    * This function should move DODGER to the left
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
-   var left = positionToInteger(DODGER.style.left)
+   window.requestAnimationFrame(step())
+
+
    function step() {
-     DODGER.style.left = `${left -= 4}px`
+     console.log('stepped')
+     var left = positionToInteger(DODGER.style.left)
+
 
      if (left > 0) {
-       window.requestAnimationFrame(step)
+      DODGER.style.left = `${left -= 4}px`
      }
+
    }
-  window.requestAnimationFrame(step)
+
+
+
+
+
 }
 
 function moveDodgerRight() {
@@ -156,16 +169,20 @@ function moveDodgerRight() {
    * This function should move DODGER to the right
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
-   var right = positionToInteger(DODGER.style.right)
-   var left = positionToInteger(DODGER.style.left)
-   function step() {
-     DODGER.style.left = `${left += 4}px`
+   window.requestAnimationFrame(step())
 
-     if (right < 400) {
-       window.requestAnimationFrame(step)
+
+   function step() {
+     console.log('stepped')
+     var left = positionToInteger(DODGER.style.left)
+     var right = positionToInteger(DODGER.style.right)
+
+
+     if (left < 360) {
+      DODGER.style.left = `${left += 4}px`
      }
+
    }
-  window.requestAnimationFrame(step)
 }
 
 /**
@@ -176,10 +193,10 @@ function positionToInteger(p) {
   return parseInt(p.split('px')[0]) || 0
 }
 
-START.addEventListener('onclick', start())
 
 function start() {
-  window.addEventListener('keydown', moveDodger())
+  console.log('started')
+  window.addEventListener('keydown', moveDodger)
 
   START.style.display = 'none'
 
